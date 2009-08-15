@@ -1,0 +1,55 @@
+--- php.orig/ext/readline/config.m4
++++ php/ext/readline/config.m4
+@@ -55,7 +55,7 @@ if test "$PHP_READLINE" && test "$PHP_RE
+ elif test "$PHP_LIBEDIT" != "no"; then
+ 
+   for i in $PHP_LIBEDIT /usr/local /usr; do
+-    test -f $i/include/readline/readline.h && LIBEDIT_DIR=$i && break
++    test -f $i/include/editline/readline.h && LIBEDIT_DIR=$i && break
+   done
+ 
+   if test -z "$LIBEDIT_DIR"; then
+--- php.orig/ext/readline/readline.c
++++ php/ext/readline/readline.c
+@@ -33,8 +33,10 @@
+ #define rl_completion_matches completion_matches
+ #endif
+ 
++#ifdef HAVE_LIBEDIT
++#include <editline/readline.h>
++#else
+ #include <readline/readline.h>
+-#ifndef HAVE_LIBEDIT
+ #include <readline/history.h>
+ #endif
+ 
+--- php5-5.2.6.orig/sapi/cli/php_cli.c	2008-01-29 13:01:14.000000000 -0700
++++ php5-5.2.6/sapi/cli/php_cli.c	2008-08-12 14:07:13.000000000 -0600
+@@ -76,9 +76,11 @@
+ #endif
+ 
+ #if (HAVE_LIBREADLINE || HAVE_LIBEDIT) && !defined(COMPILE_DL_READLINE)
+-#include <readline/readline.h>
+ #if !HAVE_LIBEDIT
++#include <readline/readline.h>
+ #include <readline/history.h>
++#else
++#include <editline/readline.h>
+ #endif
+ #include "php_cli_readline.h"
+ #endif /* HAVE_LIBREADLINE || HAVE_LIBEDIT */
+--- php5-5.2.6.orig/sapi/cli/php_cli_readline.c	2007-12-31 00:20:16.000000000 -0700
++++ php5-5.2.6.orig/sapi/cli/php_cli_readline.c	2008-08-12 14:44:36.000000000 -0600
+@@ -49,9 +49,11 @@
+ #include <unixlib/local.h>
+ #endif
+ 
+-#include <readline/readline.h>
+ #if !HAVE_LIBEDIT
++#include <readline/readline.h>
+ #include <readline/history.h>
++#else
++#include <editline/readline.h>
+ #endif
+ 
+ #include "zend_compile.h"

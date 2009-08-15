@@ -1,0 +1,7 @@
+*
+!.gitignore
+!/debian
+
+# for i in php5-*.deb; do printf "\n$i:\n"; dpkg --contents $i;done > files.out
+# cd php5-5.2.10.dfsg.1-build2 && rm -Rf ./.git* ./*-files.out ./debian/.git*
+!*files.out 
