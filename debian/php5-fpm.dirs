@@ -1,0 +1,4 @@
+/etc/php5/fpm
+/etc/init.d
+/usr/bin
+/usr/share/man/man1

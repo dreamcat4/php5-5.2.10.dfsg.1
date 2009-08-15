@@ -80,6 +80,23 @@ Description: server-side, HTML-embedded scripting language (apache 2 filter modu
  in. The goal of the language is to allow web developers to write dynamically
  generated pages quickly. This version of PHP5 was built with the Suhosin patch.
 
+Package: php5-fpm
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, php5-common (= ${binary:Version}), libmagic1, ucf, tzdata
+Provides: ${php:Provides}
+Suggests: php-pear
+Description: server-side, HTML-embedded scripting language (FPM binary)
+ This package provides the /usr/lib/cgi-bin/php5 CGI interpreter built
+ for proxying from nginx, or any other httpd that supports a similar forwarding
+ mechanism.
+ .
+ ${php:Extensions}
+ .
+ PHP5 is an HTML-embedded scripting language. Much of its syntax is borrowed
+ from C, Java and Perl with a couple of unique PHP-specific features thrown
+ in. The goal of the language is to allow web developers to write dynamically
+ generated pages quickly. This version of PHP5 was built with the Suhosin patch.
+
 Package: php5-cgi
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, mime-support, php5-common (= ${binary:Version}), libmagic1, ucf, tzdata
