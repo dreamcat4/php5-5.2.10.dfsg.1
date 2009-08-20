@@ -1,15 +1,13 @@
-php5 (5.2.10.dfsg.1-2ubuntu1~try1) karmic; urgency=low
+php5 (5.2.10.dfsg.1-2ubuntu2~pre16) karmic; urgency=low
 
-  * Working away at php-fpm
-  * New fpm-build target. Creates php5-fpm binary and associated configuration files.
-    - Modified source files: control, rules. New source files:
-      - debian/patches/php-5.2.10-fpm-0.5.13.patch
-      - php5-fpm.dirs, php5-fpm.postinst, php5-fpm.prerm
-  * Moved apache configure flags into WEB_CONFIG variable.
-      - WEB_CONFIG is shared with fpm build target.
-  * (timestamps) Race condition may occur on some faster machines between
-    the end of patching and the creation of the prepared-stamp. Reported in #443637
-    - Short delay added between $(QUILT_STAMP_FN) and ./buildconf --force
+  * New fpm-build target - Creates php5-fpm binary and associated configuration files.
+    - Modified files: debian/changelog, debian/control, debian/rules 
+    - New files: debian/patches/fpm.patch, debian/php5-fpm.dirs,
+      debian/php5-fpm.postinst, debian/php5-fpm.prerm
+  * Separated configure flags from apache and into new WEB_CONFIG variable.
+      - WEB_CONFIG is for config shared between apache and other similar build targets.
+  * Explanatory note added because quilt cannot properly set creation date / timestamp 
+    on patched files. This messes up make / autoconf. Originally reported in #443637
 
  -- dreamcat four <dreamcat4@gmail.com>  Sat, 15 Aug 2009 10:02:41 +0100
 
