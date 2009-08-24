@@ -12,7 +12,7 @@ set -e
 
 if [ "$2" ] && dpkg --compare-versions "$2" lt "5.1.6-5"; then
 	extension_re='^[[:space:]]*extension[[:space:]]*=[[:space:]]*@dsoname@\.so$'
-	for SAPI in apache apache2 cgi cli; do
+	for SAPI in apache apache2 fpm cgi cli; do
 		ini_file="/etc/php5/$SAPI/php.ini"
 		if [ -f "$ini_file" ]; then
 			if grep -q "$extension_re" $ini_file; then
