@@ -146,7 +146,9 @@ PHPWEB_CONFIG=\
 		--with-mssql=shared,/usr \
 		--with-tidy=shared,/usr \
 		--with-xmlrpc=shared \
-		--with-pgsql=shared,/usr PGSQL_INCLUDE=`pg_config --includedir` \
+		--with-pgsql=shared,/usr PGSQL_INCLUDE=`pg_config --includedir`
+
+DL_PDO_CONFIG=\
 		--enable-pdo=shared \
 		--without-pdo-dblib \
 		--with-pdo-mysql=shared,/usr \
@@ -185,8 +187,7 @@ else
 endif
 	cat test-results.txt
 
-# build: build-apache2-stamp build-apache2filter-stamp build-fpm-stamp build-cgi-stamp build-cli-stamp
-build: build-fpm-stamp build-apache2-stamp build-apache2filter-stamp build-cgi-stamp build-cli-stamp build-pear-stamp test-results.txt
+build: build-apache2-stamp build-apache2filter-stamp build-fpm-stamp build-cgi-stamp build-cli-stamp build-pear-stamp test-results.txt
 
 # When patching files like configure.in, aclocal.m4, configure can run twice. Later the compilation
 # finishes with an error. If this happens use the debugging mode of the make command:
@@ -264,8 +265,7 @@ configure-apache2-stamp: prepared-stamp
 		--prefix=/usr --with-apxs2=/usr/bin/apxs2 \
 		--with-config-file-path=/etc/php5/apache2 \
 		--with-config-file-scan-dir=/etc/php5/apache2/conf.d \
-		$(COMMON_CONFIG) \
-		$(PHPWEB_CONFIG)
+		$(COMMON_CONFIG) $(PHPWEB_CONFIG) $(DL_PDO_CONFIG)
 	cd apache2-build && \
 	cp ../Zend/zend_ini_scanner.c ../Zend/zend_language_scanner.c \
 	   ../Zend/zend_ini_parser.h ../Zend/zend_language_parser.h \
@@ -300,10 +300,9 @@ configure-fpm-stamp: prepared-stamp
 	-mkdir fpm-build
 	cd fpm-build && \
         CFLAGS="$(CFLAGS)" PROG_SENDMAIL="$(PROG_SENDMAIL)" ../configure \
-		--prefix=/usr --with-config-file-path=/etc/php5/fpm \
+		--prefix=/usr --disable-fastcgi --with-config-file-path=/etc/php5/fpm \
 		--with-config-file-scan-dir=/etc/php5/fpm/conf.d \
-		$(COMMON_CONFIG) \
-		$(PHPWEB_CONFIG)
+		$(COMMON_CONFIG) $(PHPWEB_CONFIG)
 	cd fpm-build && \
 	cp ../Zend/zend_ini_scanner.c ../Zend/zend_language_scanner.c \
 	   ../Zend/zend_ini_parser.h ../Zend/zend_language_parser.h \

@@ -1,0 +1,25 @@
+diff -Naur php-5.2.10-vanilla/Zend/zend_API.c php-5.2.10/Zend/zend_API.c
+--- php-5.2.10-vanilla/Zend/zend_API.c	2009-08-27 10:47:57.392151547 +0100
++++ php-5.2.10/Zend/zend_API.c	2009-08-27 10:51:12.000000000 +0100
+@@ -1558,11 +1558,21 @@
+ 	name_len = strlen(module->name);
+ 	lcname = zend_str_tolower_dup(module->name, name_len);
+ 
++#ifdef COMPILE_DL_PDO
+ 	if (zend_hash_add(&module_registry, lcname, name_len+1, (void *)module, sizeof(zend_module_entry), (void**)&module_ptr)==FAILURE) {
+ 		zend_error(E_CORE_WARNING, "Module '%s' already loaded", module->name);
+ 		efree(lcname);
+ 		return NULL;
+ 	}
++#else
++	if (zend_hash_add(&module_registry, lcname, name_len+1, (void *)module, sizeof(zend_module_entry), (void**)&module_ptr)==FAILURE) {
++		char* module_name_pdo="PDO";
++		if (strncmp(module_name_pdo,module->name,strlen(module_name_pdo)))
++			zend_error(E_CORE_WARNING, "Module '%s' already loaded", module->name);
++		efree(lcname);
++		return NULL;
++	}
++#endif
+ 	efree(lcname);
+ 	module = module_ptr;
+ 	EG(current_module) = module;
