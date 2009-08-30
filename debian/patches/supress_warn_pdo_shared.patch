@@ -1,7 +1,7 @@
 diff -Naur php-5.2.10-vanilla/Zend/zend_API.c php-5.2.10/Zend/zend_API.c
 --- php-5.2.10-vanilla/Zend/zend_API.c	2009-08-27 10:47:57.392151547 +0100
-+++ php-5.2.10/Zend/zend_API.c	2009-08-27 10:51:12.000000000 +0100
-@@ -1558,11 +1558,21 @@
++++ php-5.2.10/Zend/zend_API.c	2009-08-30 11:05:11.000000000 +0100
+@@ -1558,11 +1558,22 @@
  	name_len = strlen(module->name);
  	lcname = zend_str_tolower_dup(module->name, name_len);
  
@@ -13,8 +13,9 @@ diff -Naur php-5.2.10-vanilla/Zend/zend_API.c php-5.2.10/Zend/zend_API.c
  	}
 +#else
 +	if (zend_hash_add(&module_registry, lcname, name_len+1, (void *)module, sizeof(zend_module_entry), (void**)&module_ptr)==FAILURE) {
-+		char* module_name_pdo="PDO";
-+		if (strncmp(module_name_pdo,module->name,strlen(module_name_pdo)))
++		char* mn_pdo="PDO";
++		char* mn_pdo_sqlite="pdo_sqlite";
++		if (strncmp(mn_pdo,module->name,strlen(mn_pdo)) || strncmp(mn_pdo_sqlite,module->name,strlen(mn_pdo_sqlite)) )
 +			zend_error(E_CORE_WARNING, "Module '%s' already loaded", module->name);
 +		efree(lcname);
 +		return NULL;
