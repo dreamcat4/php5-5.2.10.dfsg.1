@@ -1,6 +1,6 @@
-php5 (5.2.10.dfsg.1-2ubuntu3~pre12) karmic; urgency=low
+php5 (5.2.10.dfsg.1-2ubuntu3~pre13) karmic; urgency=low
 
-  * New fpm-build target - Creates php5-fpm binary package
+  * New fpm-build target - Creates php5-fpm binary package (LP: #397721)
     - Modified files: debian/changelog, debian/control, debian/rules 
     - New files: debian/patches/supress_warn_pdo_shared.patch,
       debian/patches/fpm.patch, debian/php5-fpm.dirs,
