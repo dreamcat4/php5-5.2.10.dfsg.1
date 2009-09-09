@@ -1,4 +1,5 @@
 /etc/php5/fpm
 /etc/init.d
+/etc/logrotate.d
 /usr/bin
 /usr/share/man/man1

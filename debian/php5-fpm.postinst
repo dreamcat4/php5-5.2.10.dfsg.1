@@ -34,4 +34,35 @@ update-alternatives \
         --install /usr/bin/php-fpm php-fpm /usr/bin/php5-fpm 50 \
         --slave /usr/share/man/man1/php-fpm.1.gz php-fpm.1.gz /usr/share/man/man1/php5-fpm.1.gz
 
+update-rc.d php5-fpm defaults
+
+if [ -x /etc/init.d/php5-fpm ]
+then
+  if [ -f /var/run/php5-fpm.pid ] && pidof /usr/bin/php5-fpm >/dev/null
+  then
+    echo "Trying a soft restart"
+    FPM_PID=`cat /var/run/php5-fpm.pid`
+    if kill -s USR2 $FPM_PID 2>/dev/null
+    then
+      echo "PID IS RIGHT"
+      while [ ! -f /var/run/php5-fpm.pid.oldbin ]
+      do
+        echo "WAITING"
+        cnt=`expr $cnt + 1`
+        if [ $cnt -gt 10 ]
+        then
+          echo "php5-fpm 'soft' update failed, doing force-restart"
+          kill -s KILL $FPM_PID
+          invoke-rc.d php5-fpm start
+          exit 0
+        fi
+        sleep 1
+      done
+      echo "QUIT"
+      FPM_OLD_PID=`cat /var/run/php5-fpm.pid.oldbin`
+      kill -s QUIT $FPM_OLD_PID
+    fi
+  fi
+fi
+
 exit 0
